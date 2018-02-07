@@ -1,0 +1,6 @@
+Flask
+flask_admin
+flask_sqlalchemy
+gunicorn
+psycopg2
+redis

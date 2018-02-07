@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Remote Config Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+<h3>Remote config example</h3>
+<div style="background-color: #eff0f1">
+    <p>Click the apply config button to get a list of configs for the current session and see "color" config applied.
+        This session will always get the same config values back because they are saved per session.
+        To get potentially different config values, open an incognito window and load the page again.
+    </p>
+    <p>Update the list configs <a href="/admin/config/">here.</a></p>
+    <button type="button" id="apply-config">Apply config</button>
+    <p>
+    <table id="config-list"></table>
+    </p>
+</div>
+</body>
+<script type="application/javascript">
+    $(document).ready(function () {
+        $('#apply-config').on('click', function () {
+            $.getJSON("/api", function (data) {
+                var items = [];
+                $.each(data, function (key, val) {
+                    items.push("<tr id='" + key + "'><td>" + key + "</td><td>" + val + "</td></tr>");
+                });
+                $("#config-list").html("<tr><th>key</th><th>value</th></tr>" + items.join(""));
+                $('body').css("background-color", data["color"]);
+            });
+        });
+    });
+</script>
+</html>
